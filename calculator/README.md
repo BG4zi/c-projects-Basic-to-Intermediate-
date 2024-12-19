@@ -6,6 +6,6 @@ A simple calculator cli app written in c
 
 ```bash
 $ gcc -o calc main.c
-$ ./calc * 2 4
+$ ./calc x 2 4
 Result: 6.000000
 ```
