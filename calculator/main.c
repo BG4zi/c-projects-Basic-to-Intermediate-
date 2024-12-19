@@ -7,7 +7,7 @@ void usage(char *program) {
   printf("USAGE:\n");
   printf("%s operator n1 n2\n", program);
   printf("operators:\n");
-  printf("\t+, -, *, /\n");
+  printf("\t+, -, x, /\n");
 }
 
 
@@ -26,27 +26,31 @@ int main(int argc, char *argv[]) {
 	 exit(1);
   }
   char *a =  *argv++;
-  double firstNumber = atoi(a);
+  double firstNumber = atof(a);
   
   if (*argv == NULL) {
 	 usage(program);
 	 exit(1);
   }
   char *b =  *argv++;
-  double secondNumber = atoi(b);
+  double secondNumber = atof(b);
 
   switch (*expr) {
   case '+':
-	 printf("Result: %f", firstNumber+secondNumber);
+	 printf("Result: %f\n", firstNumber+secondNumber);
 	 break;
   case '-':
-	 printf("Result: %f", firstNumber-secondNumber);
+	 printf("Result: %f\n", firstNumber-secondNumber);
 	 break;
-  case '*':
-	 printf("Result: %f", firstNumber*secondNumber);
+  case 'x':
+	 printf("Result: %f\n", ((double)firstNumber)*((double)secondNumber));
 	 break;
   case '/':
-	 printf("Result: %f", firstNumber/secondNumber);
+	 printf("Result: %f\n", firstNumber/secondNumber);
+	 break;
+  default:
+	 printf("Unknown Operator!\n");
+	 exit(1);
 	 break;
   }	 
 	 
