@@ -81,10 +81,10 @@ int main(int argc, char **argv)
   SDL_Event ev;
 
   bool valid_key;
-
-  SDL_Color BG_COLOR = color_from_hex(0xFF000000);
-  SDL_Color LINE_COLOR = color_from_hex(0xFF00FF00);
-  SDL_Color ICON_COLOR = color_from_hex(0xFF0000FF);
+  SDL_Color BG_COLOR    = color_from_hex(0xFF1E1E2E); // Soft dark purple background (Dracula-style)
+  SDL_Color LINE_COLOR  = color_from_hex(0xFFBD93F9); // Light violet for grid lines
+  SDL_Color ICON_X_COLOR = color_from_hex(0xFFFF5555); // Red/pinkish for X
+  SDL_Color ICON_O_COLOR = color_from_hex(0xFF50FA7B); // Green for O
   
   if (SDL_Init(SDL_INIT_EVERYTHING) != 0){
     std::cerr << "SDL_Init Error: " << SDL_GetError() << std::endl;
@@ -119,25 +119,36 @@ int main(int argc, char **argv)
     if (WINNER == 0) {
 
       set_board(renderer, LINE_COLOR);
-      SDL_SetRenderDrawColor(renderer,
-			     ICON_COLOR.r, ICON_COLOR.g,
-			     ICON_COLOR.b, ICON_COLOR.a);
+
       for (int i = 0; i < 3; ++i) {
 	for (int j = 0; j < 3; ++j) {
-	  if (board[i][j] == 1)
+	  if (board[i][j] == 1){
+	    SDL_SetRenderDrawColor(renderer,
+				   ICON_X_COLOR.r, ICON_X_COLOR.g,
+				   ICON_X_COLOR.b, ICON_X_COLOR.a);
 	    draw_x(renderer, i, j);
-	  if (board[i][j] == 9)
+	  }
+	  if (board[i][j] == 9){
+	    SDL_SetRenderDrawColor(renderer,
+				   ICON_O_COLOR.r, ICON_O_COLOR.g,
+				   ICON_O_COLOR.b, ICON_O_COLOR.a);
 	    draw_o(renderer, i, j);
+	  }
 	}
       }
     } else {
-      SDL_SetRenderDrawColor(renderer,
-			     255, ICON_COLOR.g,
-			     ICON_COLOR.b, ICON_COLOR.a);
-      if (WINNER == 1)
+      if (WINNER == 1){
+	SDL_SetRenderDrawColor(renderer,
+			       ICON_X_COLOR.r, ICON_X_COLOR.g,
+			       ICON_X_COLOR.b, ICON_X_COLOR.a);
 	draw_x(renderer, 1, 1);
-      if (WINNER == 9)
+      }
+      if (WINNER == 9) {
+	SDL_SetRenderDrawColor(renderer,
+			       ICON_O_COLOR.r, ICON_O_COLOR.g,
+			       ICON_O_COLOR.b, ICON_O_COLOR.a);
 	draw_o(renderer, 1, 1);
+      }
     }
 
     SDL_RenderPresent(renderer);
@@ -159,6 +170,10 @@ int main(int argc, char **argv)
       if(board[0][0]+ board[1][1] + board[2][2]==3)
 	  WINNER = 1;
       if(board[0][0]+ board[1][1] + board[2][2]==27)
+	  WINNER = 9;
+      if(board[0][2]+ board[1][1] + board[2][0]==3)
+	  WINNER = 1;
+      if(board[0][2]+ board[1][1] + board[2][0]==27)
 	  WINNER = 9;
     valid_key = false;
     while (!valid_key && SDL_WaitEvent(&ev)) {    
